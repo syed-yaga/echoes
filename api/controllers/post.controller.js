@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { errorHandler } from "../utils/error.js";
 const prisma = new PrismaClient();
 export async function create(req, res, next) {
@@ -77,6 +77,47 @@ export async function getposts(req, res, next) {
             totalPosts,
             lastMonthPosts,
         });
+    }
+    catch (error) {
+        next(error);
+    }
+}
+export async function deletepost(req, res, next) {
+    if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+        return next(errorHandler(403, "You are not allowed to delete this post", 2003));
+    }
+    try {
+        const post = await prisma.post.delete({
+            where: { id: req.params.postId },
+        });
+        res.status(200).json(post);
+    }
+    catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2025") {
+                return res.status(404).json("Post not found");
+            }
+        }
+        next(error);
+    }
+}
+export async function updatepost(req, res, next) {
+    if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+        return next(errorHandler(403, "You are not allowed to update this post", 2003));
+    }
+    try {
+        const updatedPost = await prisma.post.update({
+            where: {
+                id: req.params.postId,
+            },
+            data: {
+                title: req.body.title,
+                content: req.body.content,
+                category: req.body.category,
+                image: req.body.image,
+            },
+        });
+        res.status(200).json(updatedPost);
     }
     catch (error) {
         next(error);
