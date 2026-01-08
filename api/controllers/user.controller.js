@@ -83,4 +83,43 @@ export function signout(req, res, next) {
     }
     catch (error) { }
 }
+export async function getUsers(req, res, next) {
+    if (!req.user.isAdmin) {
+        return next(errorHandler(403, "You are not allowed to see all the users", 2003));
+    }
+    try {
+        const startIndex = Number(req.query.startIndex) || 0;
+        const limit = Number(req.query.limit) || 9;
+        const sortDirection = req.query.sort === "asc" ? "asc" : "desc";
+        const users = await prisma.user.findMany({
+            orderBy: {
+                createdAt: sortDirection,
+            },
+            skip: startIndex,
+            take: limit,
+        });
+        const userWithoutPassword = users.map((user) => {
+            const { password, ...rest } = user;
+            return rest;
+        });
+        const totalUsers = await prisma.user.count();
+        const now = new Date();
+        const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+        const lastMonthUser = await prisma.user.count({
+            where: {
+                createdAt: {
+                    gte: oneMonthAgo,
+                },
+            },
+        });
+        res.status(200).json({
+            users: userWithoutPassword,
+            totalUsers,
+            lastMonthUser,
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+}
 //# sourceMappingURL=user.controller.js.map

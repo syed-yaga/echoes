@@ -1,10 +1,12 @@
 import express from "express";
 import { verifyToken } from "../utils/verifyUsers.js";
 import { create, deletepost, getposts, updatepost, } from "../controllers/post.controller.js";
+import { getUsers } from "../controllers/user.controller.js";
 const router = express.Router();
 router.post("/create", verifyToken, create);
 router.get("/getposts", getposts);
 router.delete("/deletepost/:postId/:userId", verifyToken, deletepost);
 router.put("/updatepost/:postId/:userId", verifyToken, updatepost);
+router.get("/getusers", verifyToken, getUsers);
 export default router;
 //# sourceMappingURL=post.route.js.map
