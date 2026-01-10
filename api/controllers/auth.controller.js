@@ -62,6 +62,12 @@ export async function signin(req, res, next) {
 }
 export async function google(req, res, next) {
     const { email, name, googlePhotoUrl } = req.body;
+    if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+    }
+    if (!process.env.JWT_SECRET) {
+        throw new Error("JWT_SECRET is not defined");
+    }
     try {
         const user = await prisma.user.findUnique({
             where: { email: email },
@@ -85,7 +91,7 @@ export async function google(req, res, next) {
             const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
             const newUser = await prisma.user.create({
                 data: {
-                    username: name.toLowerCase().split(" ").join("") +
+                    username: name?.toLowerCase().split(" ").join("") +
                         Math.random().toString(9).slice(-4),
                     email,
                     password: hashedPassword,
@@ -99,13 +105,14 @@ export async function google(req, res, next) {
                 .cookie("access_token", token, {
                 httpOnly: true,
                 secure: false,
-                sameSite: "none",
+                sameSite: "lax",
                 path: "/",
             })
                 .json(rest);
         }
     }
     catch (error) {
+        console.error("🔥 GOOGLE AUTH ERROR:", error);
         next(error);
     }
 }

@@ -76,6 +76,14 @@ export async function signin(req: any, res: any, next: any) {
 
 export async function google(req: any, res: any, next: any) {
   const { email, name, googlePhotoUrl } = req.body;
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined");
+  }
+
   try {
     const user = await prisma.user.findUnique({
       where: { email: email },
@@ -104,7 +112,7 @@ export async function google(req: any, res: any, next: any) {
       const newUser = await prisma.user.create({
         data: {
           username:
-            name.toLowerCase().split(" ").join("") +
+            name?.toLowerCase().split(" ").join("") +
             Math.random().toString(9).slice(-4),
           email,
           password: hashedPassword,
@@ -121,12 +129,13 @@ export async function google(req: any, res: any, next: any) {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: false,
-          sameSite: "none",
+          sameSite: "lax",
           path: "/",
         })
         .json(rest);
     }
   } catch (error) {
+    console.log(error);
     next(error);
   }
 }
