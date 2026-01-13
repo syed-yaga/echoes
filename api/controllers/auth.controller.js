@@ -112,7 +112,7 @@ export async function google(req, res, next) {
         }
     }
     catch (error) {
-        console.error("🔥 GOOGLE AUTH ERROR:", error);
+        console.log(error);
         next(error);
     }
 }

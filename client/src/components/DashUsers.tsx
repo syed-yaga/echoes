@@ -82,7 +82,7 @@ export default function DashUsers() {
   const handleDeleteUser = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/post/delete/${userIdToDelete}`,
+        `http://localhost:3000/api/user/delete/${userIdToDelete}`,
         {
           method: "DELETE",
           credentials: "include",

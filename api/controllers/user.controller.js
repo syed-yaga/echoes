@@ -54,9 +54,9 @@ export async function updateUser(req, res, next) {
     }
 }
 export async function deleteUser(req, res, next) {
-    console.log("JWT user id:", req.user.id);
-    console.log("Param user id:", req.params.userId);
-    if (req.user.id !== req.params.userId) {
+    console.log("REQ USER 👉", req.user);
+    console.log("PARAM USER 👉", req.params.userId);
+    if (!req.user.isAdmin && req.user.id !== req.params.userId) {
         return next(errorHandler(403, "You are not allowed to delete this user", 1003));
     }
     try {
