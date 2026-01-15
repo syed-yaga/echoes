@@ -79,9 +79,6 @@ export async function updateUser(req: any, res: any, next: any) {
 }
 
 export async function deleteUser(req: any, res: any, next: any) {
-  console.log("REQ USER 👉", req.user);
-  console.log("PARAM USER 👉", req.params.userId);
-
   if (!req.user.isAdmin && req.user.id !== req.params.userId) {
     return next(
       errorHandler(403, "You are not allowed to delete this user", 1003)
