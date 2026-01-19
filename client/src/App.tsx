@@ -12,10 +12,12 @@ import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/updatePost";
 import PostPage from "./pages/PostPage";
+import ScrolltoTop from "./components/ScrolltoTop";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrolltoTop />
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow">

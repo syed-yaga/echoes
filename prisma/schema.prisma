@@ -42,3 +42,17 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Comment {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  content         String
+  postId          String   @db.ObjectId
+  userId          String   @db.ObjectId
+
+  likes           String[] @default([])
+  numberOfLikes   Int      @default(0)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

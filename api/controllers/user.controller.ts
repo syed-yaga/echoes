@@ -161,3 +161,20 @@ export async function getUsers(req: any, res: any, next: any) {
     next(error);
   }
 }
+
+export async function getUser(req: any, res: any, next: any) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.params.userId,
+      },
+    });
+    if (!user) {
+      return next(errorHandler(404, "User not found", 1004));
+    }
+    const { password, ...rest } = user;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+}
