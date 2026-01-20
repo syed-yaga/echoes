@@ -1,6 +1,7 @@
 import { error } from "console";
 import { errorHandler } from "../utils/error.js";
 import { PrismaClient } from "@prisma/client";
+import { NextFunction } from "express";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +10,7 @@ export async function createComment(req: any, res: any, next: any) {
     const { content, postId, userId } = req.body;
     if (userId !== req.user.id) {
       return next(
-        errorHandler(4003, "You are not allowed to create this comment", 1003)
+        errorHandler(4003, "You are not allowed to create this comment", 1003),
       );
     }
 
@@ -38,6 +39,47 @@ export async function getPostComments(req: any, res: any, next: any) {
       },
     });
     res.status(200).json(comments);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function likeComment(req: any, res: any, next: any) {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: req.params.commentId,
+      },
+    });
+
+    if (!comment) {
+      return next(errorHandler(404, "Comment not found", 1004));
+    }
+    const userIndex = comment.likes.indexOf(req.user.id);
+
+    let updatedComment;
+
+    if (userIndex === -1) {
+      updatedComment = await prisma.comment.update({
+        where: { id: comment.id },
+        data: {
+          numberOfLikes: { increment: 1 },
+          likes: { push: req.user.id },
+        },
+      });
+    } else {
+      updatedComment = await prisma.comment.update({
+        where: { id: comment.id },
+        data: {
+          numberOfLikes: { decrement: 1 },
+          likes: {
+            set: comment.likes.filter((id) => id !== req.user.id),
+          },
+        },
+      });
+    }
+
+    res.status(200).json(updatedComment);
   } catch (error) {
     next(error);
   }

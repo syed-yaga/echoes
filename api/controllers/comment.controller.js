@@ -36,4 +36,42 @@ export async function getPostComments(req, res, next) {
         next(error);
     }
 }
+export async function likeComment(req, res, next) {
+    try {
+        const comment = await prisma.comment.findUnique({
+            where: {
+                id: req.params.commentId,
+            },
+        });
+        if (!comment) {
+            return next(errorHandler(404, "Comment not found", 1004));
+        }
+        const userIndex = comment.likes.indexOf(req.user.id);
+        let updatedComment;
+        if (userIndex === -1) {
+            updatedComment = await prisma.comment.update({
+                where: { id: comment.id },
+                data: {
+                    numberOfLikes: { increment: 1 },
+                    likes: { push: req.user.id },
+                },
+            });
+        }
+        else {
+            updatedComment = await prisma.comment.update({
+                where: { id: comment.id },
+                data: {
+                    numberOfLikes: { decrement: 1 },
+                    likes: {
+                        set: comment.likes.filter((id) => id !== req.user.id),
+                    },
+                },
+            });
+        }
+        res.status(200).json(updatedComment);
+    }
+    catch (error) {
+        next(error);
+    }
+}
 //# sourceMappingURL=comment.controller.js.map
