@@ -74,4 +74,31 @@ export async function likeComment(req, res, next) {
         next(error);
     }
 }
+export async function editComment(req, res, next) {
+    try {
+        const comment = await prisma.comment.findUnique({
+            where: {
+                id: req.params.commentId,
+            },
+        });
+        if (!comment) {
+            return next(errorHandler(404, "Comment not found", 1004));
+        }
+        if (comment.userId !== req.user.id && !req.user.isAdmin) {
+            return next(errorHandler(403, "You are not allowed to edit this comment", 1003));
+        }
+        const editedComment = await prisma.comment.update({
+            where: {
+                id: req.params.commentId,
+            },
+            data: {
+                content: req.body.content,
+            },
+        });
+        res.status(200).json(editedComment);
+    }
+    catch (error) {
+        next(error);
+    }
+}
 //# sourceMappingURL=comment.controller.js.map
