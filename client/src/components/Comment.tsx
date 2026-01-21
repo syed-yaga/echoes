@@ -27,9 +27,15 @@ type CommentProps = {
   comment: CommentType;
   onLike: (commentId: string) => Promise<void>;
   onEdit: (commentId: string, content: string) => Promise<void>;
+  onDelete: (commentId: string) => void;
 };
 
-export default function Comment({ comment, onLike, onEdit }: CommentProps) {
+export default function Comment({
+  comment,
+  onLike,
+  onEdit,
+  onDelete,
+}: CommentProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -144,13 +150,22 @@ export default function Comment({ comment, onLike, onEdit }: CommentProps) {
               </p>
               {currentUser &&
                 (currentUser.id === comment.userId || currentUser.isAdmin) && (
-                  <button
-                    type="button"
-                    className="text-gray-400 hover:text-blue-500"
-                    onClick={handleEdit}
-                  >
-                    Edit
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      className="text-gray-400 hover:text-blue-500"
+                      onClick={handleEdit}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="text-gray-400 hover:text-red-500"
+                      onClick={() => onDelete(comment.id)}
+                    >
+                      Delete
+                    </button>
+                  </>
                 )}
             </div>
           </>
