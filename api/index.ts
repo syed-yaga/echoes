@@ -1,5 +1,5 @@
 import express from "express";
-import mongoose from "mongoose";
+
 import dotenv from "dotenv";
 import router from "./routes/user.route.js";
 import authrouter from "./routes/auth.route.js";
@@ -7,17 +7,10 @@ import postrouter from "./routes/post.route.js";
 import commentrouter from "./routes/comment.route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import dns from "dns";
 
 dotenv.config();
-
-mongoose
-  .connect(process.env.MONGODB || "")
-  .then(() => {
-    console.log("DB is connected");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+dns.setDefaultResultOrder("ipv4first");
 
 const app = express();
 
@@ -27,7 +20,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 app.use(cookieParser());

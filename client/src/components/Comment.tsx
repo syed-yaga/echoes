@@ -51,8 +51,12 @@ export default function Comment({
         if (res.ok) {
           setUser(data);
         }
-      } catch (error: any) {
-        console.log(error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.log(error.message);
+        } else {
+          console.log("Something went wrong");
+        }
       }
     }
     getUser();

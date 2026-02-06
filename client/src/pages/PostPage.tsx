@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CalltoAction from "../components/CalltoAction";
 import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
 
 type Post = {
   id: string;
@@ -21,13 +22,13 @@ export default function PostPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState<Post | null>(null);
-
+  const [recentPosts, setRecentPosts] = useState<Post[]>([]);
   useEffect(() => {
     const fetchPost = async () => {
       try {
         setLoading(true);
         const res = await fetch(
-          `http://localhost:3000/api/post/getposts?slug=${postSlug}`
+          `http://localhost:3000/api/post/getposts?slug=${postSlug}`,
         );
         const data = await res.json();
         if (!res.ok) {
@@ -40,13 +41,31 @@ export default function PostPage() {
           setLoading(false);
           setError(false);
         }
-      } catch (error) {
+      } catch (error: unknown) {
+        console.error(error);
         setError(true);
         setLoading(false);
       }
     };
     fetchPost();
   }, [postSlug]);
+
+  useEffect(() => {
+    try {
+      async function fetchRecentPosts() {
+        const res = await fetch(
+          `http://localhost:3000/api/post/getposts?limit=3`,
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setRecentPosts(data.posts);
+        }
+      }
+      fetchRecentPosts();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   if (loading)
     return (
@@ -88,6 +107,13 @@ export default function PostPage() {
         <CalltoAction />
       </div>
       {post && <CommentSection postId={post.id} />}
+      <div className="flex flex-col justify-center items-center mb-5">
+        <h1 className="text-xl mt-5">Recent articles</h1>
+        <div className="">
+          {recentPosts &&
+            recentPosts.map((post) => <PostCard key={post.id} post={post} />)}
+        </div>
+      </div>
     </main>
   );
 }
