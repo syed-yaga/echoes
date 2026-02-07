@@ -73,6 +73,12 @@ export default function PostPage() {
         <Spinner size="xl" />
       </div>
     );
+  if (error)
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-red-500 text-lg">Failed to load post.</p>
+      </div>
+    );
   return (
     <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
       <h1 className="text-3xl mt-10 p-3 text-center font-bold max-w-2xl mx-auto lg:text-4xl">
@@ -109,7 +115,7 @@ export default function PostPage() {
       {post && <CommentSection postId={post.id} />}
       <div className="flex flex-col justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
-        <div className="">
+        <div className="flex flex-wrap gap-5 mt-5 justify-center">
           {recentPosts &&
             recentPosts.map((post) => <PostCard key={post.id} post={post} />)}
         </div>
