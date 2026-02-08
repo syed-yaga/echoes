@@ -125,4 +125,39 @@ export async function deleteComment(req, res, next) {
         next(error);
     }
 }
+export async function getComments(req, res, next) {
+    if (!req.user.isAdmin) {
+        return next(errorHandler(403, "You are not allowed to get all comments", 1003));
+    }
+    try {
+        const startIndex = Number(req.query.startIndex) || 0;
+        const limit = Number(req.query.limit) || 9;
+        const sortDirection = req.query.sort === "desc" ? "desc" : "asc";
+        const comments = await prisma.comment.findMany({
+            orderBy: {
+                createdAt: sortDirection,
+            },
+            skip: startIndex,
+            take: limit,
+        });
+        const totalComments = await prisma.comment.count();
+        const now = new Date();
+        const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+        const lastMonthComments = await prisma.comment.count({
+            where: {
+                createdAt: {
+                    gte: oneMonthAgo,
+                },
+            },
+        });
+        res.status(200).json({
+            comments,
+            totalComments,
+            lastMonthComments,
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+}
 //# sourceMappingURL=comment.controller.js.map
