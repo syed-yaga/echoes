@@ -5,11 +5,11 @@ type Post = {
   id: string;
   title: string;
   content: string;
-  image: string;
+  image?: string;
   category: string;
   slug: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 };
 
 type PostCardProps = {

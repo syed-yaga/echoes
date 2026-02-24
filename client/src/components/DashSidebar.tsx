@@ -41,8 +41,8 @@ export default function DashSidebar() {
       } else {
         dispatch(signOutSuccess());
       }
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error) {
+      console.error(error);
     }
   }
   return (
