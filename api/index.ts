@@ -8,9 +8,12 @@ import commentrouter from "./routes/comment.route.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dns from "dns";
+import path from "path";
 
 dotenv.config();
 dns.setDefaultResultOrder("ipv4first");
+
+const __dirname = path.resolve();
 
 const app = express();
 
@@ -30,6 +33,13 @@ app.use("/api/user", router);
 app.use("/api/auth", authrouter);
 app.use("/api/post", postrouter);
 app.use("/api/comment", commentrouter);
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
+
 app.use((err: any, req: any, res: any, next: any) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal server error";
