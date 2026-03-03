@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build": "vite build",
     "clean": "rm -rf ./dist",
     "compile": "npm run clean && tsc -b tsconfig.app.json",
     "lint": "eslint .",
