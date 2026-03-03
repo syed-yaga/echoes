@@ -13,8 +13,6 @@ import path from "path";
 dotenv.config();
 dns.setDefaultResultOrder("ipv4first");
 
-const __dirname = path.resolve();
-
 const app = express();
 
 app.use(
@@ -37,10 +35,10 @@ app.use("/api/auth", authrouter);
 app.use("/api/post", postrouter);
 app.use("/api/comment", commentrouter);
 
-app.use(express.static(path.join(__dirname, "client", "dist")));
+app.use(express.static(path.join(process.cwd(), "client", "dist")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
 });
 
 app.use((err: any, req: any, res: any, next: any) => {
