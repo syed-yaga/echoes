@@ -37,7 +37,7 @@ app.use("/api/comment", commentrouter);
 
 app.use(express.static(path.join(process.cwd(), "client", "dist")));
 
-app.get("*", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(process.cwd(), "client", "dist", "index.html"));
 });
 
