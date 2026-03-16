@@ -16,7 +16,7 @@ export default function CreatePost() {
   });
   const [file, setFile] = useState<File | null>(null);
   const [imageUploadProgress, setImageUploadProgress] = useState<number | null>(
-    null
+    null,
   );
   const [imageUploadError, setImageUploadError] = useState<string | null>(null);
   const [publishError, setPublishError] = useState<string | null>(null);
@@ -72,14 +72,17 @@ export default function CreatePost() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/api/post/create", {
-        method: "POST",
-        headers: {
-          "content-Type": "application/json",
+      const res = await fetch(
+        "https://echoes-wwgg.onrender.com/api/post/create",
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formData),
         },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      });
+      );
       const data = await res.json();
       if (!res.ok) {
         setPublishError(data.message);

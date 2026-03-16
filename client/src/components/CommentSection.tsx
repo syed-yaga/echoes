@@ -43,18 +43,21 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/comment/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await fetch(
+        "https://echoes-wwgg.onrender.com/api/comment/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            content: comment,
+            postId,
+            userId: currentUser?.id,
+          }),
         },
-        credentials: "include",
-        body: JSON.stringify({
-          content: comment,
-          postId,
-          userId: currentUser?.id,
-        }),
-      });
+      );
       const data = await res.json();
       if (res.ok) {
         setComment("");
@@ -74,7 +77,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     async function getcomments() {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/comment/getPostComments/${postId}`,
+          `https://echoes-wwgg.onrender.com/api/comment/getPostComments/${postId}`,
         );
         const data = await res.json();
         if (!res.ok) {
@@ -97,7 +100,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
       }
 
       const res = await fetch(
-        `http://localhost:3000/api/comment/likeComment/${commentId}`,
+        `https://echoes-wwgg.onrender.com/api/comment/likeComment/${commentId}`,
         {
           method: "PUT",
           credentials: "include",
@@ -139,7 +142,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     if (!commentToDelete || !currentUser) return;
     try {
       const res = await fetch(
-        `http://localhost:3000/api/comment/deleteComment/${commentToDelete}`,
+        `https://echoes-wwgg.onrender.com/api/comment/deleteComment/${commentToDelete}`,
         {
           method: "DELETE",
           credentials: "include",

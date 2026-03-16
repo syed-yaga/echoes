@@ -61,7 +61,7 @@ export default function DashBoardComp() {
   useEffect(() => {
     async function fetchUsers() {
       const res = await fetch(
-        "http://localhost:3000/api/user/getusers?limit=5",
+        "https://echoes-wwgg.onrender.com/api/user/getusers?limit=5",
         {
           method: "GET",
           credentials: "include",
@@ -78,7 +78,7 @@ export default function DashBoardComp() {
     async function fetchPosts() {
       try {
         const res = await fetch(
-          "http://localhost:3000/api/post/getposts?limit=5",
+          "https://echoes-wwgg.onrender.com/api/post/getposts?limit=5",
           {
             method: "GET",
             credentials: "include",
@@ -98,7 +98,7 @@ export default function DashBoardComp() {
     async function fetchComments() {
       try {
         const res = await fetch(
-          "http://localhost:3000/api/comment/getcomments?limit=5",
+          "https://echoes-wwgg.onrender.com/api/comment/getcomments?limit=5",
           {
             method: "GET",
             credentials: "include",

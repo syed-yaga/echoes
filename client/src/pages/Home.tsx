@@ -20,10 +20,13 @@ export function Home() {
 
   useEffect(() => {
     async function fetchPosts() {
-      const res = await fetch("http://localhost:3000/api/post/getPosts", {
-        method: "GET",
-        credentials: "include",
-      });
+      const res = await fetch(
+        "https://echoes-wwgg.onrender.com/api/post/getPosts",
+        {
+          method: "GET",
+          credentials: "include",
+        },
+      );
 
       const data = await res.json();
       setPosts(data.posts);

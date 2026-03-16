@@ -46,7 +46,7 @@ export default function Search() {
       setLoading(true);
       const searchQuery = urlParams.toString();
       const res = await fetch(
-        `http://localhost:3000/api/post/getposts?${searchQuery}`,
+        `https://echoes-wwgg.onrender.com/api/post/getposts?${searchQuery}`,
         {
           method: "GET",
           credentials: "include",
@@ -106,7 +106,7 @@ export default function Search() {
     urlParams.set("startIndex", startIndex.toString());
     const searchQuery = urlParams.toString();
     const res = await fetch(
-      `http://localhost:3000/api/post/getposts?${searchQuery}`,
+      `https://echoes-wwgg.onrender.com/api/post/getposts?${searchQuery}`,
       {
         method: "GET",
         credentials: "include",

@@ -1,4 +1,4 @@
-import { Alert, Button, ButtonGroup, Spinner, TextInput } from "flowbite-react";
+import { Alert, Button, Spinner, TextInput } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import Label from "../components/Label";
 import { useState } from "react";
@@ -32,12 +32,15 @@ export function SignUp() {
 
       setErrorMessage(null);
 
-      const response = await fetch("http://localhost:3000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://echoes-wwgg.onrender.com/api/auth/signup",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(formData),
+        },
+      );
 
       const data = await response.json();
       if (data.success === false) {

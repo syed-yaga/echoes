@@ -45,7 +45,7 @@ export default function Comment({
     async function getUser() {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/user/${comment.userId}`,
+          `https://echoes-wwgg.onrender.com/api/user/${comment.userId}`,
         );
         const data = await res.json();
         if (res.ok) {
@@ -70,7 +70,7 @@ export default function Comment({
   async function handleSave() {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/comment/editComment/${comment.id}`,
+        `https://echoes-wwgg.onrender.com/api/comment/editComment/${comment.id}`,
         {
           method: "PUT",
           headers: {

@@ -39,7 +39,7 @@ export default function DashComments() {
     const fetchComments = async () => {
       try {
         const res = await fetch(
-          "http://localhost:3000/api/comment/getcomments",
+          "https://echoes-wwgg.onrender.com/api/comment/getcomments",
           {
             credentials: "include",
           },
@@ -67,7 +67,7 @@ export default function DashComments() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/comment/getcomments?startIndex=${startIndex}`,
+        `https://echoes-wwgg.onrender.com/api/comment/getcomments?startIndex=${startIndex}`,
         { credentials: "include" },
       );
       const data = await res.json();
@@ -87,7 +87,7 @@ export default function DashComments() {
     setShowModal(false);
     try {
       const res = await fetch(
-        `http://localhost:3000/api/comment/deleteComment/${commentIdToDelete}`,
+        `https://echoes-wwgg.onrender.com/api/comment/deleteComment/${commentIdToDelete}`,
         {
           method: "DELETE",
           credentials: "include",

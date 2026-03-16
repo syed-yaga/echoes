@@ -37,9 +37,12 @@ export default function DashUsers() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/post/getusers", {
-          credentials: "include",
-        });
+        const res = await fetch(
+          "https://echoes-wwgg.onrender.com/api/post/getusers",
+          {
+            credentials: "include",
+          },
+        );
         const data = await res.json();
 
         if (res.ok) {
@@ -63,8 +66,8 @@ export default function DashUsers() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/post/getusers?startIndex=${startIndex}`,
-        { credentials: "include" }
+        `https://echoes-wwgg.onrender.com/api/post/getusers?startIndex=${startIndex}`,
+        { credentials: "include" },
       );
       const data = await res.json();
 
@@ -82,11 +85,11 @@ export default function DashUsers() {
   const handleDeleteUser = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/user/delete/${userIdToDelete}`,
+        `https://echoes-wwgg.onrender.com/api/user/delete/${userIdToDelete}`,
         {
           method: "DELETE",
           credentials: "include",
-        }
+        },
       );
 
       if (res.ok) {

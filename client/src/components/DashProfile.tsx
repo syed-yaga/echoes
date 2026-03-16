@@ -33,7 +33,7 @@ type FormDataType = {
 
 export default function DashProfile() {
   const { currentUser, error, loading } = useSelector(
-    (state: RootState) => state.user
+    (state: RootState) => state.user,
   );
   const [initialized, setInitialized] = useState(false);
 
@@ -52,7 +52,7 @@ export default function DashProfile() {
   const [progress, setProgress] = useState<number | null>(null);
 
   const [updateUserSuccess, setUpdateUserSuccess] = useState<string | null>(
-    null
+    null,
   );
   const [updateUserError, setUpdateUserError] = useState<string | null>(null);
   const [showModal, setShowModel] = useState(false);
@@ -169,13 +169,13 @@ export default function DashProfile() {
       dispatch(updateStart());
 
       const res = await fetch(
-        `http://localhost:3000/api/user/update/${currentUser.id}`,
+        `https://echoes-wwgg.onrender.com/api/user/update/${currentUser.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify(formData),
-        }
+        },
       );
 
       const data = await res.json();
@@ -198,11 +198,11 @@ export default function DashProfile() {
     try {
       dispatch(deleteUserStart());
       const res = await fetch(
-        `http://localhost:3000/api/user/delete/${currentUser?.id}`,
+        `https://echoes-wwgg.onrender.com/api/user/delete/${currentUser?.id}`,
         {
           method: "DELETE",
           credentials: "include",
-        }
+        },
       );
       const text = await res.text();
       const data = text ? JSON.parse(text) : null;
@@ -218,9 +218,12 @@ export default function DashProfile() {
 
   async function handleSignOut() {
     try {
-      const res = await fetch("http://localhost:3000/api/user/signout", {
-        method: "POST",
-      });
+      const res = await fetch(
+        "https://echoes-wwgg.onrender.com/api/user/signout",
+        {
+          method: "POST",
+        },
+      );
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
@@ -300,8 +303,8 @@ export default function DashProfile() {
           {imageFileUploading
             ? "Uploading image..."
             : loading
-            ? "Updating profile..."
-            : "Update"}
+              ? "Updating profile..."
+              : "Update"}
         </Button>
         {currentUser.isAdmin && (
           <Link to={"/create-post"}>

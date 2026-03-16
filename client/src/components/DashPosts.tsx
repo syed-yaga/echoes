@@ -32,7 +32,7 @@ export default function DashPosts() {
     async function fetchPosts() {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/post/getposts?userId=${currentUser?.id}`
+          `https://echoes-wwgg.onrender.com/api/post/getposts?userId=${currentUser?.id}`,
         );
         const data = await res.json();
         if (res.ok) {
@@ -54,7 +54,7 @@ export default function DashPosts() {
     const startIndex = userPosts.length;
     try {
       const res = await fetch(
-        `http://localhost:3000/api/post/getposts?userId=${currentUser?.id}&startIndex=${startIndex}`
+        `https://echoes-wwgg.onrender.com/api/post/getposts?userId=${currentUser?.id}&startIndex=${startIndex}`,
       );
       const data = await res.json();
       if (res.ok) {

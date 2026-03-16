@@ -28,7 +28,7 @@ export default function PostPage() {
       try {
         setLoading(true);
         const res = await fetch(
-          `http://localhost:3000/api/post/getposts?slug=${postSlug}`,
+          `https://echoes-wwgg.onrender.com/api/post/getposts?slug=${postSlug}`,
         );
         const data = await res.json();
         if (!res.ok) {
@@ -54,7 +54,7 @@ export default function PostPage() {
     try {
       async function fetchRecentPosts() {
         const res = await fetch(
-          `http://localhost:3000/api/post/getposts?limit=3`,
+          `https://echoes-wwgg.onrender.com/api/post/getposts?limit=3`,
         );
         const data = await res.json();
         if (res.ok) {

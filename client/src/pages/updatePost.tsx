@@ -20,7 +20,7 @@ export default function UpdatePost() {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [file, setFile] = useState<File | null>(null);
   const [imageUploadProgress, setImageUploadProgress] = useState<number | null>(
-    null
+    null,
   );
   const [imageUploadError, setImageUploadError] = useState<string | null>(null);
   const [publishError, setPublishError] = useState<string | null>(null);
@@ -32,7 +32,7 @@ export default function UpdatePost() {
     try {
       async function fetchPost() {
         const res = await fetch(
-          `http://localhost:3000/api/post/getposts?postId=${postId}`
+          `https://echoes-wwgg.onrender.com/api/post/getposts?postId=${postId}`,
         );
         const data = await res.json();
 
@@ -103,7 +103,7 @@ export default function UpdatePost() {
     }
     try {
       const res = await fetch(
-        `http://localhost:3000/api/post/updatepost${formData.id}/${currentUser.id}`,
+        `https://echoes-wwgg.onrender.com/api/post/updatepost${formData.id}/${currentUser.id}`,
         {
           method: "POST",
           headers: {
@@ -111,7 +111,7 @@ export default function UpdatePost() {
           },
           credentials: "include",
           body: JSON.stringify(formData),
-        }
+        },
       );
       const data = await res.json();
       if (!res.ok) {
