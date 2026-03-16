@@ -41,9 +41,12 @@ export default function Header() {
 
   async function handleSignOut() {
     try {
-      const res = await fetch("http://localhost:3000/api/user/signout", {
-        method: "POST",
-      });
+      const res = await fetch(
+        "https://echoes-wwgg.onrender.com/api/user/signout",
+        {
+          method: "POST",
+        },
+      );
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
