@@ -35,6 +35,10 @@ app.use("/api/auth", authrouter);
 app.use("/api/post", postrouter);
 app.use("/api/comment", commentrouter);
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 app.use(express.static(path.join(process.cwd(), "client", "dist")));
 
 app.get(/.*/, (req, res) => {
